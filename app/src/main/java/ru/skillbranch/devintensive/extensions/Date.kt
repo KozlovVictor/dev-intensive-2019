@@ -10,6 +10,11 @@ fun Date.add(value: Int, timeUnit: TimeUnits) {
     TODO("not implemented")
 }
 
+//FIXME
+fun Date.humanizeDiff(): String {
+    return this.toString()
+}
+
 enum class TimeUnits {
     SECOND, MINUTE, HOUR, DAY
 }
