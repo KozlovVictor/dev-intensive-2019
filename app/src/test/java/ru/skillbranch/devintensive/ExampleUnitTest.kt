@@ -129,4 +129,19 @@ class ExampleUnitTest {
         println("------------------------------------------------------\n")
         println(user2.lastVisit?.humanizeDiff())
     }
+
+    @Test
+    fun test_builder() {
+        val victor = User.Builder()
+            .id("15")
+            .firstName("Victor")
+            .lastName("Kozlov")
+            .avatar("url")
+            .rating(15)
+            .respect(50)
+            .lastVisit(Date().add(-20, TimeUnits.MINUTE))
+            .isOnline(false)
+            .build()
+        victor.printMe()
+    }
 }
