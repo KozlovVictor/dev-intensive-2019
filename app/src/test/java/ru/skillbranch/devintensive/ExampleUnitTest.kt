@@ -81,4 +81,14 @@ class ExampleUnitTest {
                     "${Utils.toInitials(" ", "")}"
         )
     }
+
+    @Test
+    fun transliteration() {
+        println(
+            "${Utils.transliteration("Придурок вбеЖал на камод!", "%")} \n" +
+            "${Utils.transliteration("Nikolay_kurenov", "_")}\n" +
+            "${Utils.transliteration("Женя Стереотипов")}\n" +
+            "${Utils.transliteration("Amazing Петр","_")}"
+        )
+    }
 }
