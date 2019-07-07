@@ -8,7 +8,8 @@ import ru.skillbranch.devintensive.extensions.format
 import ru.skillbranch.devintensive.models.BaseMessage
 import ru.skillbranch.devintensive.models.Chat
 import ru.skillbranch.devintensive.models.User
-import java.util.Date
+import ru.skillbranch.devintensive.utils.Utils
+import java.util.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -67,6 +68,17 @@ class ExampleUnitTest {
             ${user2.lastVisit?.format("yyyy.MM.dd G 'at' HH:mm:ss z")}
             ${user3.lastVisit?.format("EEE, MMM d, ''yy")}
         """.trimIndent()
+        )
+    }
+
+    @Test
+    fun toInitials() {
+        println(
+            "${Utils.toInitials("john", "doe")} \n" +
+                    "${Utils.toInitials(null, "doe")} \n" +
+                    "${Utils.toInitials("John", null)} \n" +
+                    "${Utils.toInitials(null, null)} \n" +
+                    "${Utils.toInitials(" ", "")}"
         )
     }
 }
