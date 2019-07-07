@@ -5,6 +5,7 @@ import org.junit.Test
 import ru.skillbranch.devintensive.extensions.TimeUnits
 import ru.skillbranch.devintensive.extensions.add
 import ru.skillbranch.devintensive.extensions.format
+import ru.skillbranch.devintensive.extensions.humanizeDiff
 import ru.skillbranch.devintensive.models.BaseMessage
 import ru.skillbranch.devintensive.models.Chat
 import ru.skillbranch.devintensive.models.User
@@ -72,7 +73,7 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun toInitials() {
+    fun test_toInitials() {
         println(
             "${Utils.toInitials("john", "doe")} \n" +
                     "${Utils.toInitials(null, "doe")} \n" +
@@ -83,12 +84,49 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun transliteration() {
+    fun test_transliteration() {
         println(
             "${Utils.transliteration("Придурок вбеЖал на камод!", "%")} \n" +
-            "${Utils.transliteration("Nikolay_kurenov", "_")}\n" +
-            "${Utils.transliteration("Женя Стереотипов")}\n" +
-            "${Utils.transliteration("Amazing Петр","_")}"
+                    "${Utils.transliteration("Nikolay_kurenov", "_")}\n" +
+                    "${Utils.transliteration("Женя Стереотипов")}\n" +
+                    "${Utils.transliteration("Amazing Петр", "_")}"
         )
+    }
+
+    @Test
+    fun test_humanizeDiff() {
+        val users: MutableList<User> = mutableListOf()
+        val user1 = User.makeUser("gool vool")
+        users.add(user1)
+        users.add(user1.copy(lastVisit = Date().add(-30, TimeUnits.SECOND)))
+        users.add(user1.copy(lastVisit = Date().add(-63, TimeUnits.SECOND)))
+        users.add(user1.copy(lastVisit = Date().add(-31, TimeUnits.MINUTE)))
+        users.add(user1.copy(lastVisit = Date().add(-57, TimeUnits.MINUTE)))
+        users.add(user1.copy(lastVisit = Date().add(-16, TimeUnits.HOUR)))
+        users.add(user1.copy(lastVisit = Date().add(-25, TimeUnits.HOUR)))
+        users.add(user1.copy(lastVisit = Date().add(-25, TimeUnits.DAY)))
+        users.add(user1.copy(lastVisit = Date().add(-400, TimeUnits.DAY)))
+        users.add(user1.copy(lastVisit = Date().add(30, TimeUnits.SECOND)))
+        users.add(user1.copy(lastVisit = Date().add(63, TimeUnits.SECOND)))
+        users.add(user1.copy(lastVisit = Date().add(31, TimeUnits.MINUTE)))
+        users.add(user1.copy(lastVisit = Date().add(57, TimeUnits.MINUTE)))
+        users.add(user1.copy(lastVisit = Date().add(16, TimeUnits.HOUR)))
+        users.add(user1.copy(lastVisit = Date().add(25, TimeUnits.HOUR)))
+        users.add(user1.copy(lastVisit = Date().add(25, TimeUnits.DAY)))
+        users.add(user1.copy(lastVisit = Date().add(400, TimeUnits.DAY)))
+        users.add(user1.copy(lastVisit = Date().add(-11, TimeUnits.SECOND)))
+        users.add(user1.copy(lastVisit = Date().add(-11, TimeUnits.HOUR)))
+        users.add(user1.copy(lastVisit = Date().add(-11, TimeUnits.DAY)))
+        users.add(user1.copy(lastVisit = Date().add(11, TimeUnits.MINUTE)))
+
+        val user2 = (user1.copy(lastVisit = Date().add(-12000, TimeUnits.MINUTE)))
+
+        users.forEach { user ->
+            println(
+                "${user.lastVisit?.humanizeDiff()}"
+            )
+        }
+        println("------------------------------------------------------\n")
+        println(user2.lastVisit?.humanizeDiff())
     }
 }
