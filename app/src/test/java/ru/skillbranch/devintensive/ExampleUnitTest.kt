@@ -144,4 +144,14 @@ class ExampleUnitTest {
             .build()
         victor.printMe()
     }
+
+    @Test
+    fun test_plural() {
+        println(
+            "${TimeUnits.SECOND.plural(1)} \n" + //1 секунду
+                    "${TimeUnits.MINUTE.plural(4)} \n" + //4 минуты
+                    "${TimeUnits.HOUR.plural(19)} \n" +//19 часов
+                    TimeUnits.DAY.plural(222)//222 дня
+        )
+    }
 }
