@@ -9,17 +9,8 @@ fun String.truncate(count: Int = 16): String {
 }
 
 fun String.stripHtml(): String {
-//    return this.replace("/^[<]{1}(?![А-я]$){.*}{2}[>]$/", "")
-//    val regex = Regex("""^(?![А-я]$)[&<].*[;>]$""")
-//    val regex = Regex("""[<&][^А-я][^ ].*?[;>]""")
-//    val regex = Regex("""<[^>]*>""")
-//    return regex.replace(this, "")
     return this
         .replace("<.*?>".toRegex(), "")
         .replace("\\s+".toRegex(), " ")
         .replace("['&]".toRegex(), "")
-//        replace("(<.*?>)|(&quot;)|(&amp;)|(&gt;)|(&lt;)|(&#39;)".toRegex(), "").replace("\\s+".toRegex(), " ")
-//        .replace("<.*?>".toRegex(), "")
-//        .replace("""[<&][^А-я].*?[;>]""".toRegex(), "")
-//        .replace("\\s+".toRegex()," ")
 }

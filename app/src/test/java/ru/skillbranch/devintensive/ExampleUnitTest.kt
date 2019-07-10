@@ -172,10 +172,14 @@ class ExampleUnitTest {
 //        println('б'.toByte().toInt())
 //        println('я'.toByte().toInt())
 
-        assertEquals("Образовательное IT-сообщество Skill Branch",
-            "<p class=\"title\">Образовательное IT-сообщество Skill Branch</p>".stripHtml())
-        assertEquals("Образовательное IT-сообщество Skill Branch",
-            "<p>Образовательное       IT-сообщество Skill Branch</p>".stripHtml())
+        assertEquals(
+            "Образовательное IT-сообщество Skill Branch",
+            "<p class=\"title\">Образовательное IT-сообщество Skill Branch</p>".stripHtml()
+        )
+        assertEquals(
+            "Образовательное IT-сообщество Skill Branch",
+            "<p>Образовательное       IT-сообщество Skill Branch</p>".stripHtml()
+        )
 
         /* additional tests */
         assertEquals("single", "&amp;&lt;&gt;single&#39;&quot;".stripHtml())
