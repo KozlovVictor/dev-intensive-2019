@@ -161,6 +161,7 @@ class ExampleUnitTest {
 
     @Test
     fun test_stripHtml() {
+//        println("&ldfmb; &иклиока;".stripHtml())
         println("&игра; amp lt &gt 39; meters ()quot;".stripHtml())
 //        println('А'.toByte().toInt())
 //        println('Б'.toByte().toInt())
