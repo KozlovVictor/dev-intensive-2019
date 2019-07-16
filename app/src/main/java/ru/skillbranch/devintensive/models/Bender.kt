@@ -12,10 +12,26 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-        return if (question.answers.contains(answer)) {
-            "Отлично - это правильный ответ!" to status.color
+        return if (question.answers.contains(answer.toLowerCase()) && validation(answer)) {
+            question = question.nextQuestion()
+            "Отлично - это правильный ответ!\n${question.question}" to status.color
         } else {
-            "Это неправильный ответ!" to status.color
+            status = status.nextStatus()
+            "Это неправильный ответ!\n${question.question}" to status.color
+        }
+    }
+
+    private fun validation(answer: String): Boolean {
+        return when (question) {
+            Question.NAME -> answer[0].isUpperCase()
+            Question.PROFESSION -> answer[0].isLowerCase()
+            Question.MATERIAL -> {
+                val bool = Regex("""\d+""").findAll(answer).toString()
+                    bool.isEmpty()
+            }
+            Question.BDAY -> Regex("""\d+""").findAll(answer).toString() == answer
+            Question.SERIAL -> Regex("""\d+""").findAll(answer).toString() == answer && answer.length == 7
+            else -> false
         }
     }
 
@@ -23,15 +39,37 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         NORMAL(Triple(255, 255, 255)),
         WARNING(Triple(255, 120, 0)),
         DANGER(Triple(255, 60, 60)),
-        CRITICAL(Triple(255, 255, 0))
+        CRITICAL(Triple(255, 0, 0));
+
+        fun nextStatus(): Status {
+            return if (this.ordinal < values().lastIndex) {
+                values()[this.ordinal + 1]
+            } else {
+                values()[0]
+            }
+        }
     }
 
     enum class Question(val question: String, val answers: List<String>) {
-        NAME("Как меня зовут?", listOf("bender", "бендер")),
-        PROFESSION("Назови мою профессию?", listOf("bender", "сгибальщик")),
-        MATERIAL("Из чего я сделан?", listOf("metal", "iron", "wood", "метал", "дерево")),
-        BDAY("Когда меня создали?", listOf("2993")),
-        SERIAL("Мой серийный номер?", listOf("2716057")),
-        IDLE("На этом все, вопросов больше нет", listOf()),
+        NAME("Как меня зовут?", listOf("bender", "бендер")) {
+            override fun nextQuestion(): Question = PROFESSION
+        },
+        PROFESSION("Назови мою профессию?", listOf("bender", "сгибальщик")) {
+            override fun nextQuestion(): Question = MATERIAL
+        },
+        MATERIAL("Из чего я сделан?", listOf("metal", "iron", "wood", "метал", "дерево")) {
+            override fun nextQuestion(): Question = BDAY
+        },
+        BDAY("Когда меня создали?", listOf("2993")) {
+            override fun nextQuestion(): Question = SERIAL
+        },
+        SERIAL("Мой серийный номер?", listOf("2716057")) {
+            override fun nextQuestion(): Question = IDLE
+        },
+        IDLE("На этом все, вопросов больше нет", listOf()) {
+            override fun nextQuestion(): Question = IDLE
+        };
+
+        abstract fun nextQuestion(): Question
     }
 }
