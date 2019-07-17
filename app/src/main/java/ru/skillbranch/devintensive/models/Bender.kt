@@ -1,6 +1,7 @@
 package ru.skillbranch.devintensive.models
 
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
+    private var wrongAnswerCount = 0
 
     fun askQuestion(): String = when (question) {
         Question.NAME -> Question.NAME.question
@@ -12,12 +13,20 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-        return if (question.answers.contains(answer.toLowerCase()) && validation(answer)) {
+        return if (question.answers.contains(answer.toLowerCase())) { //  && validation(answer)
+            wrongAnswerCount = 0
             question = question.nextQuestion()
-            "Отлично - это правильный ответ!\n${question.question}" to status.color
+            "Отлично - ты справился\n${question.question}" to status.color
         } else {
-            status = status.nextStatus()
-            "Это неправильный ответ!\n${question.question}" to status.color
+            wrongAnswerCount++
+            if (wrongAnswerCount >= 3) {
+                status = Status.NORMAL
+                question = Question.NAME
+                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+            } else {
+                status = status.nextStatus()
+                "Это неправильный ответ!\n${question.question}" to status.color
+            }
         }
     }
 
@@ -26,11 +35,17 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             Question.NAME -> answer[0].isUpperCase()
             Question.PROFESSION -> answer[0].isLowerCase()
             Question.MATERIAL -> {
-                val bool = Regex("""\d+""").findAll(answer).toString()
-                    bool.isEmpty()
+                val regex = """\d+""".toRegex()
+                !regex.containsMatchIn(answer)
             }
-            Question.BDAY -> Regex("""\d+""").findAll(answer).toString() == answer
-            Question.SERIAL -> Regex("""\d+""").findAll(answer).toString() == answer && answer.length == 7
+            Question.BDAY -> {
+                val regex = """\d+""".toRegex()
+                regex.matches(answer)
+            }
+            Question.SERIAL -> {
+                val regex = """\d+""".toRegex()
+                !regex.matches(answer) && answer.length == 7
+            }
             else -> false
         }
     }
