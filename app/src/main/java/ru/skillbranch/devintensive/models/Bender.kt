@@ -13,42 +13,42 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-        return if (question.answers.contains(answer.toLowerCase()) && validation(answer)) { //  && validation(answer)
-            wrongAnswerCount = 0
+        return if (question.answers.contains(answer.toLowerCase())) { //  && validation(answer)
+//            wrongAnswerCount = 0
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         } else {
             wrongAnswerCount++
-            if (wrongAnswerCount >= 3) {
+            if (wrongAnswerCount < 3) {
+                status = status.nextStatus()
+                "Это неправильный ответ\n${question.question}" to status.color
+            } else {
                 status = Status.NORMAL
                 question = Question.NAME
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-            } else {
-                status = status.nextStatus()
-                "Это неправильный ответ!\n${question.question}" to status.color
             }
         }
     }
 
-    private fun validation(answer: String): Boolean {
-        return when (question) {
-            Question.NAME -> answer[0].isUpperCase()
-            Question.PROFESSION -> answer[0].isLowerCase()
-            Question.MATERIAL -> {
-                val regex = """\d+""".toRegex()
-                !regex.containsMatchIn(answer)
-            }
-            Question.BDAY -> {
-                val regex = """\d+""".toRegex()
-                regex.matches(answer)
-            }
-            Question.SERIAL -> {
-                val regex = """\d+""".toRegex()
-                !regex.matches(answer) && answer.length == 7
-            }
-            else -> false
-        }
-    }
+//    private fun validation(answer: String): Boolean {
+//        return when (question) {
+//            Question.NAME -> answer[0].isUpperCase()
+//            Question.PROFESSION -> answer[0].isLowerCase()
+//            Question.MATERIAL -> {
+//                val regex = """\d+""".toRegex()
+//                !regex.containsMatchIn(answer)
+//            }
+//            Question.BDAY -> {
+//                val regex = """\d+""".toRegex()
+//                regex.matches(answer)
+//            }
+//            Question.SERIAL -> {
+//                val regex = """\d+""".toRegex()
+//                !regex.matches(answer) && answer.length == 7
+//            }
+//            else -> false
+//        }
+//    }
 
     enum class Status(val color: Triple<Int, Int, Int>) {
         NORMAL(Triple(255, 255, 255)),
