@@ -200,4 +200,34 @@ class ExampleUnitTest {
         println(longHtml.stripHtml())
         assertEquals(" line1 \n line2\n\nline3", longHtml.stripHtml())
     }
+
+    @Test
+    fun test_validation() {
+        val name1 = "Bender"
+        val name2 = "bender"
+        val prof1 = "Сгибальщик"
+        val prof2 = "сгибальщик"
+        assert(name1[0].isUpperCase())
+        assert(!name2[0].isUpperCase())
+        assert(!prof1[0].isLowerCase())
+        assert(prof2[0].isLowerCase())
+    }
+
+    @Test
+    fun test_material() {
+        val regex = """\d""".toRegex()
+        assert(!regex.containsMatchIn("sbgdh"))
+    }
+
+    @Test
+    fun test_bday() {
+        val regex = """^\d+$""".toRegex()
+        assert(regex.containsMatchIn("9"))
+    }
+
+    @Test
+    fun test_serial() {
+        val regex = """^[\d+]{7}$""".toRegex()
+        assert(regex.containsMatchIn("1234564"))
+    }
 }
