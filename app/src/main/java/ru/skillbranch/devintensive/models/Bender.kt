@@ -36,8 +36,8 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
     private fun validation(answer: String): Boolean {
         return when (question) {
-            Question.NAME -> answer[0].isUpperCase()
-            Question.PROFESSION -> answer[0].isLowerCase()
+            Question.NAME -> !answer.isBlank() && answer[0].isUpperCase()
+            Question.PROFESSION -> !answer.isBlank() && answer[0].isLowerCase()
             Question.MATERIAL -> {
                 val regex = """\d""".toRegex()
                 !regex.containsMatchIn(answer)
