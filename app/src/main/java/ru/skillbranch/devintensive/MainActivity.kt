@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if (view?.id == sendBtn.id) {
-            Timber.i(this.isKeyboardOpen().toString()) // For testing open keyboard only
-            Timber.i(this.isKeyboardClosed().toString()) // For testing close keyboard only
+//            Timber.i(this.isKeyboardOpen().toString()) // For testing open keyboard only
+//            Timber.i(this.isKeyboardClosed().toString()) // For testing close keyboard only
             applyData()
         }
     }
