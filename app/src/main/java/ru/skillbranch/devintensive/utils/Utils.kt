@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
+
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         val parts: List<String>? = fullName?.split(" ")
@@ -75,5 +77,18 @@ object Utils {
             }
         }
         return result.toString()
+    }
+
+    fun verification(github: String) =
+        Regex("((https://|www.|https://www.)?github.com/(?!enterprise$|features$|topics$|collections$|trending$|events$|marketplace$|pricing$|nonprofit$|customer-stories$|security$|login$|join$)[\\w\\d-_]{1,39}/?$)|").find(
+            github
+        )?.value == github
+
+    fun dpToPx(context: Context, dp: Int): Int {
+        return (dp * context.resources.displayMetrics.density + 0.5f).toInt()
+    }
+
+    fun pxToDp(context: Context, px: Int): Int {
+        return (px / context.resources.displayMetrics.density + 0.5f).toInt()
     }
 }
